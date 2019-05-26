@@ -20,8 +20,7 @@
         $_SESSION['connection'] = "Failed";
     }
 
-
-                                                   	$table_name = 'shares';
+	$table_name = 'shares';
 
 
     $sql = 'DROP TABLE shares';
@@ -36,6 +35,10 @@
         )';
 	$result = $db->prepare($sql);
     $result->execute();
+
+    echo 'The ' . $table_name . ' table has been successfully created<br/>';
+
+
 
 $sql = "INSERT INTO `$table_name`  (`share_ID`,`share_Name`,`share_Price`)
 VALUES	(1,'Lloyds Banking Group',6.42),
@@ -61,5 +64,38 @@ VALUES	(1,'Lloyds Banking Group',6.42),
 
 	$result = $db->prepare($sql);
     $result->execute();
+
+	$rowcount = 0;
+
+     $sql = "SELECT share_ID, share_Name, share_Price FROM shares";
+
+     $result = $db->prepare($sql);
+     $result->execute();
+     echo '<table>
+            <thead>
+                <tr>
+                    <th>SHARE ID</th>
+                    <th>SHARE NAME</th>
+                    <th>SHARE PRICE</th>
+                </tr>
+            </thead>
+            <tbody>';
+
+     while($rows = $result->fetch(PDO::FETCH_NUM)){
+         echo '<tr class="results">';
+         echo '  <td>' .$rows[0]. '</td>';
+         echo '  <td>' .$rows[1]. '</td>';
+         echo '  <td>' .$rows[2]. '</td>';
+         echo '</tr>';
+         $rowcount++;
+     };
+     echo '
+    </tbody>
+    </table>';
+
+     echo '<tr class="rowcount">';
+     echo '  <td>Records Found</td>';
+     echo '  <td>' .$rowcount. '</td>';
+     echo '</tr>';
 
 ?>
